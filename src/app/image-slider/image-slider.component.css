@@ -1,0 +1,24 @@
+.slider {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+.slide {
+  animation: fadeInOut 0.5s ease;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

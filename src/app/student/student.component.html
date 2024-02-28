@@ -1,0 +1,99 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Student Information</h2>
+    <form #studentForm="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          #nameInput
+          (input)="validateName(nameInput.value)"
+          name="name"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': !isNameValid && nameInput.value.trim() !== '' }"
+          [value]="studentData.name"
+        />
+        <div class="invalid-feedback" *ngIf="!isNameValid && nameInput.value.trim() !== ''">
+          Name must be at least 4 characters long
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input
+          type="number"
+          id="age"
+          name="age"
+          #ageInput
+          class="form-control"
+          (input)="validateAge(ageInput.value)"
+          [ngClass]="{ 'is-invalid': !isAgeValid && ageInput.value.trim() !== '' }"
+          [value]="studentData.age"
+        />
+        <div class="invalid-feedback" *ngIf="!isAgeValid && ageInput.value.trim() !== ''">
+          Please enter an age between 10 and 17.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          class="form-control"
+          #addressInout
+          (input)="validateAddress(addressInout.value)"
+          [ngClass]="{ 'is-invalid': !isAddressValid && addressInout.value.trim() !== '' }"
+        />
+        <div class="invalid-feedback" *ngIf="!isAddressValid && addressInout.value.trim() !== ''">
+          Please enter a valid address (Giza, Alex, or Cairo).
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number:</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          name="phoneNumber"
+          class="form-control"
+          required
+          pattern="^(010|012|015)\d{8}$"
+          #phoneNumberInput
+          (input)="validatePhoneNumber(phoneNumberInput.value)"
+          [ngClass]="{ 'is-invalid': !isPhoneNumberValid && phoneNumberInput.value.trim() !== '' }"
+          [value]="studentData.phoneNumber"
+        />
+        <div class="invalid-feedback" *ngIf="!isPhoneNumberValid && phoneNumberInput.value.trim() !== ''">
+          Please enter a valid phone number starting with 010, 012, or 015 followed by 8 digits.
+        </div>
+      </div>
+      <button
+        type="submit"
+        [disabled]="!isNameValid || !isAgeValid || !isAddressValid || !isPhoneNumberValid"
+        class="btn btn-primary"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+  
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Student Information Table</h2>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of studentArray">
+          <td>{{ student.name }}</td>
+          <td>{{ student.age }}</td>
+          <td>{{ student.address }}</td>
+          <td>{{ student.phoneNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
