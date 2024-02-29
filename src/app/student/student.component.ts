@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IStudent } from '../../Model/istudent';
+import { elementAt } from 'rxjs';
 
 @Component({
   selector: 'app-student',
@@ -11,7 +12,6 @@ export class StudentComponent {
   isAgeValid = true;
   isAddressValid = true;
   isPhoneNumberValid = true;
-
   studentData: IStudent = {
     name: '',
     age: null,
@@ -19,7 +19,8 @@ export class StudentComponent {
     phoneNumber: '',
   };
   studentArray: IStudent[] = [];
-
+  constructor() {
+  }
   validateName(inputName: string): void {
     this.isNameValid = inputName.length >= 4;
     this.studentData.name = inputName;
@@ -43,7 +44,6 @@ export class StudentComponent {
     this.isPhoneNumberValid = /^(010|012|015)\d{8}$/.test(phoneNumberInput);
     this.studentData.phoneNumber = phoneNumberInput;
   }
-
   onSubmit(): void {
     // Check if all fields are filled and valid
     const allFieldsValid =
@@ -68,7 +68,6 @@ export class StudentComponent {
 
       if (!isDuplicate) {
         this.studentArray.push(this.studentData);
-        console.log(this.studentArray);
         this.resetForm();
       } else {
         alert("Duplicate data detected. Not adding to the table.")
@@ -83,7 +82,6 @@ export class StudentComponent {
       );
     }
   }
-
   resetForm(): void {
     // Reset form data
     this.studentData = {
@@ -98,5 +96,29 @@ export class StudentComponent {
     this.isAddressValid = true;
     this.isPhoneNumberValid = true;
   }
+  @ViewChild("studentID") studentId: ElementRef<HTMLInputElement> | undefined;
+
+  deleteStudent() {
+    let id: string = '';
+    for (let i = 0; i < this.studentId!.nativeElement.id.length; i++) {
+      // Check if the character is a digit
+      if (!isNaN(parseInt(this.studentId!.nativeElement.id[i]))) {
+        id += this.studentId!.nativeElement.id[i];
+      }
+    }
+  
+    const studentIndex: number = parseInt(id);
+    if (studentIndex >= 0 && studentIndex < this.studentArray.length) {
+      this.studentArray.splice(studentIndex, 1);
+      if (this.studentId && this.studentId.nativeElement) {
+        this.studentId.nativeElement.remove();
+      }
+    }
+  }
+  
+  
+  
   
 }
+
+

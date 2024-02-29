@@ -40,6 +40,7 @@
           id="address"
           name="address"
           class="form-control"
+          [value]="studentData.address"
           #addressInout
           (input)="validateAddress(addressInout.value)"
           [ngClass]="{ 'is-invalid': !isAddressValid && addressInout.value.trim() !== '' }"
@@ -78,22 +79,28 @@
   
   <div class="container mt-5">
     <h2 class="text-center mb-4">Student Information Table</h2>
-    <table class="table">
+    <table class="table table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
           <th>Phone Number</th>
+          <th>Action</th> 
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of studentArray">
-          <td>{{ student.name }}</td>
-          <td>{{ student.age }}</td>
-          <td>{{ student.address }}</td>
-          <td>{{ student.phoneNumber }}</td>
-        </tr>
+        <ng-container *ngFor="let student of studentArray; let i = index">
+          <tr #studentID id="student-{{i}}">
+            <td>{{ student.name }}</td>
+            <td>{{ student.age }}</td>
+            <td>{{ student.address }}</td>
+            <td>{{ student.phoneNumber }}</td>
+            <td><button class="btn btn-danger" (click)="deleteStudent()">Delete</button></td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
+  
+  

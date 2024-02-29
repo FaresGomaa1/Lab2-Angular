@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -15,28 +15,35 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
   ],
 })
-export class ImageSliderComponent {
+export class ImageSliderComponent implements OnInit {
   images: string[] = [
     'assets/depositphotos_179052444-stock-photo-spain-valdovino-starry-sky-milky.jpg',
     'assets/pexels-james-wheeler-414612.jpg',
     'assets/tree-1866602_640.jpg',
   ];
   currentIndex: number = 0;
-  currentImage: string;
+  currentImage: string = 'assets/depositphotos_179052444-stock-photo-spain-valdovino-starry-sky-milky.jpg';
+  slideshowPlaying: boolean = false;
+  slideshowInterval: any;
 
-  constructor() {
-    this.currentImage = this.images[0];
+  constructor() {}
+
+  ngOnInit() {
     this.startSlider();
   }
 
   startSlider() {
-    let currentIndex = 0;
-    setInterval(() => {
-      this.currentImage = this.images[currentIndex];
-      currentIndex =
-        currentIndex === this.images.length - 1 ? 0 : currentIndex + 1;
+    this.slideshowInterval = setInterval(() => {
+      this.currentImage = this.images[this.currentIndex];
+      this.currentIndex =
+        this.currentIndex === this.images.length - 1 ? 0 : this.currentIndex + 1;
     }, 3000);
   }
+
+  stopSlider() {
+    clearInterval(this.slideshowInterval);
+  }
+
   prevSlide() {
     this.currentIndex =
       this.currentIndex === 0 ? this.images.length - 1 : this.currentIndex - 1;
@@ -45,5 +52,15 @@ export class ImageSliderComponent {
   nextSlide() {
     this.currentIndex =
       this.currentIndex === this.images.length - 1 ? 0 : this.currentIndex + 1;
+  }
+
+  playSlideshow() {
+    this.startSlider();
+    this.slideshowPlaying = true;
+  }
+
+  stopSlideshow() {
+    this.stopSlider();
+    this.slideshowPlaying = false;
   }
 }
